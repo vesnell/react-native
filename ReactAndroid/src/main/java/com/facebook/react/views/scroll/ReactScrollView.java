@@ -48,7 +48,6 @@ public class ReactScrollView extends ScrollView implements ReactClippingViewGrou
 
   private final OnScrollDispatchHelper mOnScrollDispatchHelper = new OnScrollDispatchHelper();
   private final @Nullable OverScroller mScroller;
-  private final VelocityHelper mVelocityHelper = new VelocityHelper();
   private final Rect mRect = new Rect(); // for reuse to avoid allocation
 
   private boolean mActivelyScrolling;
@@ -216,10 +215,7 @@ public class ReactScrollView extends ScrollView implements ReactClippingViewGrou
         updateClippingRect();
       }
 
-      ReactScrollViewHelper.emitScrollEvent(
-        this,
-        mOnScrollDispatchHelper.getXFlingVelocity(),
-        mOnScrollDispatchHelper.getYFlingVelocity());
+      ReactScrollViewHelper.emitScrollEvent(this);
     }
   }
 
@@ -253,15 +249,11 @@ public class ReactScrollView extends ScrollView implements ReactClippingViewGrou
       return false;
     }
 
-    mVelocityHelper.calculateVelocity(ev);
     int action = ev.getAction() & MotionEvent.ACTION_MASK;
     if (action == MotionEvent.ACTION_UP && mDragging) {
       float velocityX = mVelocityHelper.getXVelocity();
       float velocityY = mVelocityHelper.getYVelocity();
-      ReactScrollViewHelper.emitScrollEndDragEvent(
-        this,
-        velocityX,
-        velocityY);
+      ReactScrollViewHelper.emitScrollEndDragEvent(this);
       mDragging = false;
       // After the touch finishes, we may need to do some scrolling afterwards either as a result
       // of a fling or because we need to page align the content
@@ -423,7 +415,7 @@ public class ReactScrollView extends ScrollView implements ReactClippingViewGrou
 
     if (mSendMomentumEvents) {
       enableFpsListener();
-      ReactScrollViewHelper.emitScrollMomentumBeginEvent(this, velocityX, velocityY);
+      ReactScrollViewHelper.emitScrollMomentumBeginEvent(this);
     }
 
     mActivelyScrolling = false;

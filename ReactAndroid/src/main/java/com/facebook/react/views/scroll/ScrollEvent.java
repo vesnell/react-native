@@ -30,8 +30,6 @@ public class ScrollEvent extends Event<ScrollEvent> {
 
   private int mScrollX;
   private int mScrollY;
-  private double mXVelocity;
-  private double mYVelocity;
   private int mContentWidth;
   private int mContentHeight;
   private int mScrollViewWidth;
@@ -43,8 +41,6 @@ public class ScrollEvent extends Event<ScrollEvent> {
       ScrollEventType scrollEventType,
       int scrollX,
       int scrollY,
-      float xVelocity,
-      float yVelocity,
       int contentWidth,
       int contentHeight,
       int scrollViewWidth,
@@ -58,8 +54,6 @@ public class ScrollEvent extends Event<ScrollEvent> {
         scrollEventType,
         scrollX,
         scrollY,
-        xVelocity,
-        yVelocity,
         contentWidth,
         contentHeight,
         scrollViewWidth,
@@ -80,8 +74,6 @@ public class ScrollEvent extends Event<ScrollEvent> {
       ScrollEventType scrollEventType,
       int scrollX,
       int scrollY,
-      float xVelocity,
-      float yVelocity,
       int contentWidth,
       int contentHeight,
       int scrollViewWidth,
@@ -90,8 +82,6 @@ public class ScrollEvent extends Event<ScrollEvent> {
     mScrollEventType = scrollEventType;
     mScrollX = scrollX;
     mScrollY = scrollY;
-    mXVelocity = xVelocity;
-    mYVelocity = yVelocity;
     mContentWidth = contentWidth;
     mContentHeight = contentHeight;
     mScrollViewWidth = scrollViewWidth;
@@ -142,16 +132,11 @@ public class ScrollEvent extends Event<ScrollEvent> {
     layoutMeasurement.putDouble("width", PixelUtil.toDIPFromPixel(mScrollViewWidth));
     layoutMeasurement.putDouble("height", PixelUtil.toDIPFromPixel(mScrollViewHeight));
 
-    WritableMap velocity = Arguments.createMap();
-    velocity.putDouble("x", mXVelocity);
-    velocity.putDouble("y", mYVelocity);
-
     WritableMap event = Arguments.createMap();
     event.putMap("contentInset", contentInset);
     event.putMap("contentOffset", contentOffset);
     event.putMap("contentSize", contentSize);
     event.putMap("layoutMeasurement", layoutMeasurement);
-    event.putMap("velocity", velocity);
 
     event.putInt("target", getViewTag());
     event.putBoolean("responderIgnoreScroll", true);
